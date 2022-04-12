@@ -61,11 +61,19 @@ Testing on a TV requires [registering a LG developer account](https://webostv.de
 Once you have installed the devmode app on your target TV and logged in with your LG developer account, you need to turn on the `Dev Mode Status` and `Key Server`.
 **Make sure** to take a note of the passphrase.
 
+In case of TV rooted with RootMyTV and with the [Homebrew Channel app](https://github.com/webosbrew/webos-homebrew-channel#configuring-webososeares-cli-with-rooted-tv) installed, it is already ready to be connected if ssh is working with a key.
+Your home .ssh directory is mounted (read-only) in the container by the dev.sh script.
+
+For other commands and options refer to the [CLI User Guide](https://www.webosose.org/docs/tools/sdk/cli/cli-user-guide).
+
 ```sh
 # Add your TV. The defaults are fine, but I recommend naming it `tv`.
 ./dev.sh ares-setup-device --search
 
-# This command sets up the SSH key for the device `tv` (Key Server must be running)
+# Add your rooted TV. As "privatekey" argument use just the file name of the private key used to connect to the tv, which schould be present in your ~/.ssh directory
+./dev.sh ares-setup-device -a tv -i "username=root" -i "privatekey=id_rsa" -i "host=tv_ip_address" -i "port=22"
+
+# This command sets up the SSH key for the device `tv` (Key Server must be running). Skip if your TV is rooted.
 ./dev.sh ares-novacom --device tv --getkey
 
 # Run this command to verify that things are working.
